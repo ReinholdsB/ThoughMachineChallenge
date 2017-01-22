@@ -23,17 +23,22 @@ public class Board {
     }
 
     public void placeShip(Position position) throws CoordinatesTakenException, CoordinatesOutOfBoundsException {
-        int maxCoordinateSize = boardSize - 1;
-        if (position.getCoordinates().getxCoordinate() > maxCoordinateSize ||
-                position.getCoordinates().getyCoordinate() > maxCoordinateSize) {
-            throw new CoordinatesOutOfBoundsException(
-                    "Coordinates=" + position.getCoordinates().toString() + " are out-of-bounds of the board, boardSize=" + boardSize);
-        }
+        validateCoordinates(position.getCoordinates());
+
         if (shipLocations.get(position) == null) {
             shipLocations.put(position, new Ship());
         } else {
             throw new CoordinatesTakenException(
                     "Coordinates=" + position.getCoordinates().toString() + " already taken! Ship not placed on board!");
+        }
+    }
+
+    private void validateCoordinates(Coordinates coordinates) throws CoordinatesOutOfBoundsException {
+        int maxCoordinateSize = boardSize - 1;
+        if(coordinates.getxCoordinate() > maxCoordinateSize ||
+                coordinates.getyCoordinate() > maxCoordinateSize){
+            throw new CoordinatesOutOfBoundsException(
+                    "Coordinates=" + coordinates + " are out-of-bounds of the board, boardSize=" + boardSize);
         }
     }
 
@@ -57,13 +62,11 @@ public class Board {
     }
 
     public Ship getShip(Coordinates coordinates) throws ShipNotFoundException {
-        System.out.println("Retrieving Ship from coordinates=" + coordinates);
         Position position = getPosition(coordinates);
         return getShip(position);
     }
 
     public Ship getShip(Position position) throws ShipNotFoundException {
-        System.out.println("Retrieving Ship from position=" + position);
         Ship ship = shipLocations.get(position);
         if (ship != null) {
             return ship;
@@ -84,13 +87,22 @@ public class Board {
         throw new ShipNotFoundException("Could not find ship at supplied coordinates=\"" + coordinates.toString() + "\"");
     }
 
-    public void moveShip(Coordinates startCoordinates, char[] directions) throws ShipNotFoundException, InvalidMovementRequestException {
+    public void moveShip(Coordinates startCoordinates, char[] directions)
+            throws ShipNotFoundException, InvalidMovementRequestException {
         Position startPosition = getPosition(startCoordinates);
         Ship ship = getShip(startPosition);
         if (!ship.isSunk()) {
             Position currentPosition = startPosition;
             for (char c : directions) {
                 currentPosition = currentPosition.move(MovementAction.valueOf(String.valueOf(c)));
+                try {
+                    validateCoordinates(currentPosition.getCoordinates());
+                } catch (CoordinatesOutOfBoundsException e) {
+                    throw new InvalidMovementRequestException("Cannot move ship out-of-bounds!", e);
+                }
+            }
+            if (shipLocations.get(currentPosition) != null){
+                throw new InvalidMovementRequestException("Cannot move ship to already taken location!");
             }
             shipLocations.remove(startPosition);
             shipLocations.put(currentPosition, ship);

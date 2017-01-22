@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Reinholds on 21/01/2017.
  */
-public class GameTest {
+public class TaskTest {
 
     private Coordinates startCoordinates;
     private Position startPosition;
@@ -27,14 +27,14 @@ public class GameTest {
     private Coordinates endCoordinates;
     private Position endPosition;
 
-    private Game game;
+    private Task task;
     private ArrayList<String> instructions;
 
     @Before
     public void setUp() throws Exception {
         instructions = new ArrayList<>();
         instructions.add("10");
-        game = new Game(instructions);
+        task = new Task(instructions);
 
         startCoordinates = new Coordinates(0, 0);
         startPosition = new Position(startCoordinates, Orientation.N);
@@ -50,49 +50,49 @@ public class GameTest {
     public void getBoard_returnsValidBoard() throws Exception {
         instructions = new ArrayList<>();
         instructions.add("10");
-        game = new Game(instructions);
+        task = new Task(instructions);
 
-        Board board = game.getBoard();
+        Board board = task.getBoard();
         assertNotNull(board);
         assertEquals(10, board.getBoardSize());
     }
 
     @Test
     public void shootShip_shouldFailIfMissesShip() throws Exception {
-        assertFalse("Should be failed shot", game.shoot(startCoordinates));
+        assertFalse("Should be failed shot", task.shoot(startCoordinates));
 
-        game.placeShip(position2);
-        assertFalse("Should be failed shot", game.shoot(startCoordinates));
+        task.placeShip(position2);
+        assertFalse("Should be failed shot", task.shoot(startCoordinates));
     }
 
     @Test
     public void shootShip_shouldSucceedIfHitsShip() throws Exception {
-        game.placeShip(startPosition);
-        assertTrue("Should be successful hit", game.shoot(startCoordinates));
+        task.placeShip(startPosition);
+        assertTrue("Should be successful hit", task.shoot(startCoordinates));
     }
 
     @Test
     public void moveShip_shouldMoveToEndPoint_ifItsClear() throws Exception {
-        game.placeShip(startPosition);
-        game.moveShip(startCoordinates, "MRMLMM".toCharArray());
+        task.placeShip(startPosition);
+        task.moveShip(startCoordinates, "MRMLMM".toCharArray());
 
-        System.out.println(game.getCurrentStateOfPlay());
+        System.out.println(task.getCurrentStateOfPlay());
 
-        assertNotNull("Ship should have move to new location", game.getBoard().getShip(endCoordinates));
+        assertNotNull("Ship should have move to new location", task.getBoard().getShip(endCoordinates));
     }
 
     @Test
     public void fullSetOfCommands() throws Exception {
-        game.placeShip(startPosition);
-        game.placeShip(position2);
+        task.placeShip(startPosition);
+        task.placeShip(position2);
 
-        game.moveShip(startCoordinates, "MRMLMM".toCharArray());
+        task.moveShip(startCoordinates, "MRMLMM".toCharArray());
 
-        game.shoot(position2.getCoordinates());
+        task.shoot(position2.getCoordinates());
 
 
-        assertTrue(game.getCurrentStateOfPlay().contains("(1, 3, N)"));
-        assertTrue(game.getCurrentStateOfPlay().contains("(9, 2, E) SUNK"));
+        assertTrue(task.getCurrentStateOfPlay().contains("(1, 3, N)"));
+        assertTrue(task.getCurrentStateOfPlay().contains("(9, 2, E) SUNK"));
 
 //        assertEquals("(1, 3, N)\n(9, 2, E) SUNK",
 //                game.getCurrentStateOfPlay());
@@ -104,45 +104,45 @@ public class GameTest {
     public void instructionsToPlaceShipsIsRecognisedAndExecutedCorrectly() throws Exception {
         instructions = new ArrayList<>();
         instructions.add("25");
-        game = new Game(instructions);
-        game.performInstruction("(0, 0, N) (9, 2, E)");
-        assertTrue(game.getCurrentStateOfPlay().contains("(0, 0, N)"));
-        assertTrue(game.getCurrentStateOfPlay().contains("(9, 2, E)"));
+        task = new Task(instructions);
+        task.performInstruction("(0, 0, N) (9, 2, E)");
+        assertTrue(task.getCurrentStateOfPlay().contains("(0, 0, N)"));
+        assertTrue(task.getCurrentStateOfPlay().contains("(9, 2, E)"));
 
-        game.performInstruction("(0, 5, W) (5, 22, S) (23, 2, S)");
-        assertTrue(game.getCurrentStateOfPlay().contains("(0, 5, W)"));
-        assertTrue(game.getCurrentStateOfPlay().contains("(5, 22, S)"));
-        assertTrue(game.getCurrentStateOfPlay().contains("(23, 2, S)"));
+        task.performInstruction("(0, 5, W) (5, 22, S) (23, 2, S)");
+        assertTrue(task.getCurrentStateOfPlay().contains("(0, 5, W)"));
+        assertTrue(task.getCurrentStateOfPlay().contains("(5, 22, S)"));
+        assertTrue(task.getCurrentStateOfPlay().contains("(23, 2, S)"));
     }
 
     @Test(expected = CoordinatesOutOfBoundsException.class)
     public void instructionsToPlaceOutOfBounds_shouldReturnException() throws Exception {
         instructions = new ArrayList<>();
         instructions.add("10");
-        game = new Game(instructions);
-        game.performInstruction("(15, 2, S)");
+        task = new Task(instructions);
+        task.performInstruction("(15, 2, S)");
     }
 
     @Test
     public void instructionsToMoveShipIsRecognisedAndExecutedCorrectly() throws Exception {
-        game.performInstruction("(0, 0, N)");
+        task.performInstruction("(0, 0, N)");
 
-        game.performInstruction("(0, 0) MRMLMM");
-        assertEquals("(1, 3, N)", game.getCurrentStateOfPlay());
+        task.performInstruction("(0, 0) MRMLMM");
+        assertEquals("(1, 3, N)", task.getCurrentStateOfPlay());
 
     }
 
     @Test
     public void instructionsToShootShipsIsRecognisedAndExecutedCorrectly() throws Exception {
-        game.performInstruction("(9, 2, E)");
+        task.performInstruction("(9, 2, E)");
 
-        game.performInstruction("(9, 2)");
-        assertTrue(game.getCurrentStateOfPlay().equals("(9, 2, E) SUNK"));
+        task.performInstruction("(9, 2)");
+        assertTrue(task.getCurrentStateOfPlay().equals("(9, 2, E) SUNK"));
     }
 
     @Test(expected = CoordinatesTakenException.class)
     public void whenTryToAddTwoShipsToTheSameLocation_shouldThrowException() throws Exception {
-        game.performInstruction("(0, 0, N) (0, 0, N)");
-        assertEquals("(0, 0, N)", game.getCurrentStateOfPlay());
+        task.performInstruction("(0, 0, N) (0, 0, N)");
+        assertEquals("(0, 0, N)", task.getCurrentStateOfPlay());
     }
 }

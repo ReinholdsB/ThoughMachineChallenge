@@ -20,7 +20,7 @@ public class TaskRunnerTest {
         TaskRunner taskRunner = new TaskRunner();
         taskRunner.runGame("input.txt", "target/testOutput.txt");
 
-        assertEquals("(1, 3, N)\n(9, 2, E) SUNK", taskRunner.getGame().getCurrentStateOfPlay());
+        assertEquals("(1, 3, N)\n(9, 2, E) SUNK", taskRunner.getTask().getCurrentStateOfPlay());
     }
 
     @Test

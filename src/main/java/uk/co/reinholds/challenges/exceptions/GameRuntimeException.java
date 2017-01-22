@@ -7,4 +7,8 @@ public class GameRuntimeException extends Exception {
     public GameRuntimeException(String message) {
         super(message);
     }
+
+    public GameRuntimeException(String message, Exception cause) {
+        super(message, cause);
+    }
 }

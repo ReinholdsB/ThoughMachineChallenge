@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Reinholds on 20/01/2017.
  */
-public class Game {
+public class Task {
 
 
     public static final String PLACE_SHIPS_INSTRUCTION_SPLIT_REGEX = "( )(?=[(])";
@@ -22,7 +22,7 @@ public class Game {
     private static final Pattern MOVE_SHIP_PATTERN = Pattern.compile("\\((\\d*), (\\d*)\\) ([A-Z]*)$");
     private static final Pattern SHOOT_SHIP_PATTERN = Pattern.compile("\\((\\d*), (\\d*)\\)");
 
-    public Game(List<String> instructions) {
+    public Task(List<String> instructions) {
         assert instructions.get(0) != null;
 
         Integer boardSize = Integer.valueOf(instructions.remove(0));
@@ -52,7 +52,7 @@ public class Game {
         board.placeShip(position);
     }
 
-    public void moveShip(Coordinates startCoordinates, char[] directions) throws InvalidMovementRequestException, ShipNotFoundException {
+    public void moveShip(Coordinates startCoordinates, char[] directions) throws InvalidMovementRequestException, ShipNotFoundException, CoordinatesOutOfBoundsException {
         board.moveShip(startCoordinates, directions);
     }
 

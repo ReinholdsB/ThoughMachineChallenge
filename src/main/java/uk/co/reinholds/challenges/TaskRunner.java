@@ -12,7 +12,7 @@ import java.util.List;
  * Hello world!
  */
 public class TaskRunner {
-    private Game game;
+    private Task task;
 
     private static final String DEFAULT_INPUT_FILENAME = "./input.txt";
     private static final String DEFAULT_OUTPUT_FILENAME = "./output.txt";
@@ -36,9 +36,9 @@ public class TaskRunner {
     void runGame(String inputFileLocation, String outputFileLocation) {
         List<String> instructions = readInstructionFromFile(inputFileLocation);
 
-        game = new Game(instructions);
-        game.start();
-        writeResultsToFile(outputFileLocation, game.getCurrentStateOfPlay());
+        task = new Task(instructions);
+        task.start();
+        writeResultsToFile(outputFileLocation, task.getCurrentStateOfPlay());
     }
 
 
@@ -60,8 +60,8 @@ public class TaskRunner {
     }
 
 
-    public Game getGame() {
-        return game;
+    public Task getTask() {
+        return task;
     }
 
     public void writeResultsToFile(String fileLocation, String results) {
