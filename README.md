@@ -21,16 +21,16 @@ First line has to be the size of the board that will be used in the game.
 
 Next lines in the file should be commands. Available commands:
 1. Place ship(s) - place new ships on the board.
-  - Example Command: `(5, 2, N)` - 5 - X x coordinate, 2 - Y coordinate, N - orientation of ship.
+  - Example Command: `(5, 2, N)` - 5 - X coordinate, 2 - Y coordinate, N - orientation of ship.
   - Stackable: Yes, you can have multiple commands on one line, separated by spaces.
   - Limitations: Ship cannot be placed out-of-bounds or on a location that's already taken.
 2. Move ship - give instructions to a ship to move on the board.
-  - Example Command: `(5, 2)` MLLRM - 5 - X x coordinate, 2 - Y coordinate, MLLRM - movement directions for selected ship.
+  - Example Command: `(5, 2)` MLLRM - 5 - X coordinate, 2 - Y coordinate, MLLRM - movement directions for selected ship.
     + M - Move Forward, R - turn right, L - turn left.
   - Stackable: No, one command per line.
   - Limitations: Ship cannot move out-of-bounds or to a location that's already taken.
 3. Shoot at ships - If you hit a ship, it sinks.
-  - Example Command: `(5, 2)` - xCoordinate=5, yCoordinate=2.
+  - Example Command: `(5, 2)` - X coordinate=5, Y coordinate=2.
   - Stackable: No, one command per line.
   - Limitations: Cannot shoot out-of-bounds.
 
