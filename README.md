@@ -1,4 +1,4 @@
-# Though Machine Coding Challenge
+# Thought Machine Coding Challenge
 
 ## Building the application
 To build the application in the root directory run:  
