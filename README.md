@@ -1,5 +1,10 @@
 # Thought Machine Coding Challenge
 
+## Description
+Given the initial state of a board and a series of operations, output the final state of the board
+(the position of all ships and whether it has sunk or not). The input should be a file and the
+output stored in another file.
+
 ## Building the application
 To build the application in the root directory run:  
 `mvn clean install`
@@ -8,13 +13,13 @@ To build the application in the root directory run:
 After the app has been build, in the root directory run:  
 `java -jar target\thought-machine-exercise-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
-By default it will use input.txt file as input and output.txt for output.
+By default, it will use input.txt file as input and output.txt for output.
 
-If you wish to override these values you can supply them as parameters, when running the app:  
+If you wish to override these values you can supply them as parameters when running the app:  
 `java -jar target\thought-machine-exercise-1.0-SNAPSHOT-jar-with-dependencies.jar input.txt output.txt`
 
 ## Input file requirements 
-First line has to be the size of the board that will be used in the game. 
+The first line has to be the size of the board that will be used in the game. 
   - Example Command: `10` - 10 - size of the board.
   - Stackable: No, one command per line.
   - Limitations: Can only be set once as the first command in the file.
@@ -34,7 +39,19 @@ Next lines in the file should be commands. Available commands:
   - Stackable: No, one command per line.
   - Limitations: Cannot shoot out-of-bounds.
 
-The commands can be repeated as many times as needed as long as they don't hit the limitations
+The commands can be repeated as many times as needed as long as they don't hit the limitations.
+Assume the bottom-left cell to be the origin (0, 0).
   
 ## End of run
 At the end of the run it will output the end board state to the output file (i.e. default "output.txt", can be overriden).
+
+## Example
+Input:
+  10                      // Size of the board is 10x10
+  (0, 0, N) (9, 2, E)     // 2 ships in different locations
+  (0, 0) MRMLMM           // move/rotate the ship located at (0, 0)
+  (9, 2)                  // shoot at (9, 2) and sink the ship if there is one
+
+Output:
+  (1, 3, N)
+  (9, 2, E) SUNK
